@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello HTML</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Html 실습!!</h1>
+
+    <nav>
+            <ul>
+                <li><a href="sub.html#home"target="Iframe">HOME</a></li>
+                <li><a href="sub.html#profile"target="Iframe">PROFILE</a></li>
+                <li><a href="sub.html#gallery"target="Iframe">GALLERY</a></li>
+                <li><a href="#">BOARD</a></li>
+                <li><a href="#">CONTACT</a></li>
+            </ul>
+        </nav>
+
+    <ul>
+        <li><a href="webex01.html" target="Iframe">Web Page -01</a></li>
+        <li><a href="webex02.html" target="Iframe">Web Page -02</a></li>
+        <li><a href="webex03.html" target="Iframe">Web page -03</a></li>
+        <li><a href="webex04.html" target="Iframe">Web page -04</a></li>
+    </ul>
+
+    <iframe 
+        src="./webex01.html"
+        title="iframe 실습"
+        name="Iframe"
+        id="myIrame"
+        frameborder="0"
+        scrolling="no"
+        style="border:none;">
+    </iframe>
+    
+    <script>
+        const iframe = document.getElementById("myIrame");
+
+        iframe.onload = function () {
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            iframe.style.height = iframeDoc.body.scrollHeight + 50 + "px";
+            iframe.style.width = iframeDoc.body.scrollWidth + 50 + "px";
+        };
+    </script>
+</body>
+</html>
