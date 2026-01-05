@@ -131,7 +131,6 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-*.csv
 
 # Spyder project settings
 .spyderproject
@@ -218,5 +217,9 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# ECT
+*.csv
+books_scraping_llm.jsonl
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,windows
