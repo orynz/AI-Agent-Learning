@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<div>
+    <h1>GET 방식</h1>
+    <form action="http://127.0.0.1:8000/hello" method="get">
+        <fieldset>
+            <legend>개인정보 입력</legend>
+        <label for="">성명: </label>
+        <input type="text" name="name" value="get">
+        <input type="submit" value="전송">
+        </fieldset>
+    </form>
+    </div>
+<div>
+    <h1>POST 방식</h1>
+    <form action="http://127.0.0.1:8000/hello" method="post">
+        <fieldset>
+            <legend>개인정보 입력</legend>
+        <label for="">성명: </label>
+        <input type="text" name="name" value="post">
+        <input type="submit" value="전송">
+        </fieldset>
+    </form>
+    </div>
+</body>
+</html>

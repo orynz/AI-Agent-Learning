@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>신상정보입력</h1>
+    <form action="/join" method="post">
+        <fieldset>
+            <legend>기본 정보</legend>
+            <label for="name">성명*</label>
+            <input type="text" name="name" value="gonh" required><br>
+
+            <label for="address">주소</label>
+            <input type="text" name="address" value="서울"><br>
+
+            <label for="phone">전화번호</label>
+            <input type="tel" name="phone" value="010-236-5972"><br>
+
+            <label for="email">E-mail*</label>
+            <input type="email" name="email" value="jfuine@naver.com" required><br>
+
+            <label for="age">나이</label>
+            <input type="number" name="age" value="55"><br>
+
+            <label for="sex">성별</label>
+            <select name="sex" id="sex">
+                <option value="남" selected>남성</option>
+                <option value="여">여성</option>
+            </select>
+        </fieldset>
+        <input type="submit" name="submit" id="submit">
+
+    </form>
+
+
+</body>
+
+</html>

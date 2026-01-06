@@ -1,5 +1,17 @@
-# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,windows
-# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,python,windows
+# Created by https://www.toptal.com/developers/gitignore/api/python,dotenv,windows,visualstudiocode,firebase
+# Edit at https://www.toptal.com/developers/gitignore?templates=python,dotenv,windows,visualstudiocode,firebase
+
+### dotenv ###
+.env
+
+### Firebase ###
+.idea
+**/node_modules/*
+**/.firebaserc
+
+### Firebase Patch ###
+.runtimeconfig.json
+.firebase/
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
@@ -124,7 +136,6 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
 .venv
 env/
 venv/
@@ -218,8 +229,9 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# End of https://www.toptal.com/developers/gitignore/api/python,dotenv,windows,visualstudiocode,firebase
+
 # ECT
 *.csv
 books_scraping_llm.jsonl
-
-# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,windows
+info.txt
