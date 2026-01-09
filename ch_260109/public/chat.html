@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modern FastAPI Chat</title>
+  <link rel="stylesheet" href="chat.css">
+</head>
+
+<body>
+
+  <div class="chat-container">
+    <header>실시간 채팅방</header>
+
+    <div id="box">
+      <div>
+        <div class="sender-name">COM</div>
+        <div class="message others">안녕하세요! 반갑습니다.</div>
+      </div>
+
+    </div>
+
+    <form id="chatForm"">
+      <div class=" input-row">
+      <input type="text" id="sender" value="guest" placeholder="이름">
+      <input type="text" id="message" placeholder="메시지를 입력하세요..." autocomplete="off">
+      <input type="submit" value="전송">
+  </div>
+  </form>
+  </div>
+
+  <script>
+    const box = document.getElementById('box');
+    const chatForm = document.getElementById('chatForm');
+    const senderInput = document.getElementById('sender');
+    const msgInput = document.getElementById('message');
+
+    let currentSize = 0; // 현재 브라우저가 가지고 있는 메시지 개수
+
+    // 랜덤 아이디 세팅
+    function setRandomID() {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "http://127.0.0.1:8000/get-id", true);
+      xhr.onload = function (e) {
+        if (e.target.status == 200 && e.target.statusText == "OK") {
+          obj = JSON.parse(xhr.responseText)
+          //console.log(xhr.responseText)
+          senderInput.value = obj.random_id
+        }
+      };
+      xhr.send();
+    }
+
+    window.onload = function () {
+      setRandomID()
+    };
+
+    // 1. 메시지 전송 함수
+    chatForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const sender = senderInput.value;
+      const message = msgInput.value;
+      if (!message) return;
+
+      await fetch(`/receive?sender=${encodeURIComponent(sender)}&message=${encodeURIComponent(message)}`);
+      msgInput.value = '';
+      msgInput.focus();
+    };
+
+    // 2. 새 메시지 가져오기 (폴링)
+    async function fetchMessages() {
+      try {
+        const response = await fetch(`/send?size=${currentSize}`);
+        const data = await response.json();
+
+        if (data.new_messages.length > 0) {
+          data.new_messages.forEach(msg => {
+            appendMessage(msg);
+          });
+          currentSize = data.total_size;
+          box.scrollTop = box.scrollHeight; // 스크롤 하단 이동
+        }
+      } catch (e) {
+        console.error("데이터 가져오기 실패:", e);
+      }
+    }
+
+    // 3. 화면에 메시지 추가
+    function appendMessage(msg) {
+      const isMe = msg.sender === senderInput.value;
+      const msgDiv = document.createElement('div');
+      msgDiv.style.display = 'flex';
+      msgDiv.style.flexDirection = 'column';
+
+      const html = isMe
+        ? `<div class="message me">${msg.text}</div>`
+        : `<div><div class="sender-name">${msg.sender}</div><div class="message others">${msg.text}</div></div>`;
+
+      msgDiv.innerHTML = html;
+      box.appendChild(msgDiv);
+    }
+
+    // 1초마다 서버 확인
+    setInterval(fetchMessages, 1000);
+  </script>
+
+</body>
+
+</html>

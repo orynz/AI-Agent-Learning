@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FastAPI Dashboard Counter</title>
+    <link rel="stylesheet" href="count.css">
+</head>
+
+<body>
+
+    <div class="counter-card" id="card">
+        <div class="status-badge">SERVER CONNECTED</div>
+        <h2>현재 접속자 수</h2>
+        <p>- 갱신 주기: (10초) -</p>
+
+        <div class="control-wrapper">
+            <button class="btn-circle" id="minus">−</button>
+            <div id="result">0</div>
+            <button class="btn-circle" id="plus">+</button>
+        </div>
+
+        <button id="btn-refresh">즉시 업데이트</button>
+    </div>
+
+    <script>
+        var xhr = new XMLHttpRequest();
+
+        var result = document.getElementById('result');
+        var btnMinus = document.getElementById('minus');
+        var btnPlus = document.getElementById('plus');
+        var btnRefresh = document.getElementById('btn-refresh');
+
+        var client_cnt = 0;
+
+        window.onload = function () {
+            requestCount();
+            setInterval(update, 10000)
+        };
+
+        btnMinus.onclick = function () {
+            change(-1)
+        };
+
+        btnPlus.onclick = function () {
+            change(1)
+        };
+
+        btnRefresh.onclick = function () {
+            change(0);
+        };
+
+        function change(cnt) {
+            xhr.open("GET", `http://localhost:8000/change/${cnt}`, true);
+            xhr.onload = function (e) {
+                obj = JSON.parse(xhr.responseText);
+                client_cnt = obj.count;
+                result.textContent = obj.count;
+            };
+            xhr.send();
+        }
+        function requestCount() {
+            xhr.open("GET", "http://localhost:8000/count", true);
+            xhr.onload = function (e) {
+                obj = JSON.parse(xhr.responseText);
+                client_cnt = obj.count;
+                result.textContent = obj.count;
+            };
+            xhr.send();
+        }
+        function update() {
+            xhr.open("GET", `http://localhost:8000/update`, true);
+            xhr.onload = function (e) {
+                var obj = JSON.parse(e.target.responseText);
+                if (obj != null) {
+                    client_cnt = obj.count;
+                    result.textContent = obj.count;
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</body>
+</html>
