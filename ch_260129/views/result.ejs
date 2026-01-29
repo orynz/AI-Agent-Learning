@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제출 결과</title>
+</head>
+<body>
+    <!-- 홈으로 이동하는 링크 -->
+    <a href="/">홈으로</a>
+    
+    <h2>현재 사용자 정보</h2>
+    <p>
+        이름: <%= name %><br>
+        이메일: <%= email %>
+    </p>
+
+    <h3>전체 사용자 목록</h3>
+    <ul>
+        <% for (let i = 0; i < users.length; i++) { %>
+            <li>
+                <%= i + 1 %>. <%= users[i].name %> / <%= users[i].email %>
+            </li>
+        <% } %>
+    </ul>
+</body>
+</html>

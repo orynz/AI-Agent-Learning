@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사용자 입력</title>
+</head>
+<body>
+    <h1>사용자 정보 입력</h1>
+    <form action="/result" method="get">
+        <!-- GET 방식으로 /result로 데이터 전송 -->
+        이름: 
+        <input name="name" type="text" value="Hong" placeholder="이름을 입력하세요."><br><br>
+        <!-- type="email"로 이메일 형식 검증 -->
+        E-Mail: 
+        <input name="email" type="email" value="Hong@test.com" placeholder="이메일을 입력하세요."><br><br>
+        <input type="submit" value="제출">
+    </form>
+</body>
+</html>
