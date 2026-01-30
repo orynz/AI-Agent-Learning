@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>사용자 목록</h1>
+    <table>
+        <tr>
+            <th>이름</th>
+            <th>이메일</th>
+            <th>비고</th>
+        </tr>
+        <% for(var i=0; i<users.length; i++) { %>
+            <tr>
+                <td><%= users[i].name %></td>
+                <td><%= users[i].email %></td>
+                <td><a href="/detail?uid=<%= users[i].uid %>">상세보기</a></td>
+            </tr>
+        <% } %>
+    </table>
+    <a href="/">홈으로</a>
+
+</body>
+</html>

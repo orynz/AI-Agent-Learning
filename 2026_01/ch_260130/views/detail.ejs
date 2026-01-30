@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제출 결과</title>
+</head>
+<body>
+    <h2>현재 사용자 정보</h2>
+    <p>
+        이름: <%= name %><br>
+        이메일: <%= email %>
+    </p>
+
+    <p>
+        <a href="/list">목록</a> |
+        <a href="/modify?uid=<%= uid %>">수정</a> |
+        <a href="/delete?uid=<%= uid %>">삭제</a> |
+    </p>
+</body>
+</html>

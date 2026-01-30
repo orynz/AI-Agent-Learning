@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수정</title>
+</head>
+<body>
+    <h2>수정</h2>
+    <form action="/modify_ok" method="get">
+        <input type="hidden" name="uid" value="<%= uid %>">
+        <input type="text" name="name" value="<%= name %>">
+        <input type="email" name="email" value="<%= email %>">
+        <input type="submit" value="수정">
+    </form>
+    <a href="/list">목록</a> | <a href="/detail?uid=<%= uid %>">취소</a>
+</body>
+</html>
