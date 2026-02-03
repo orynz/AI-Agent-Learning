@@ -239,3 +239,5 @@ $RECYCLE.BIN/
 *.tx
 *.pdf
 !requirements.txt
+!package.json
+!package-lock.json

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>과제 자동 코치 Agent</title>
+</head>
+<style>
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background: #f7fafc; height: 100vh; display: flex; overflow: hidden; }
+  
+  /* 레이아웃 */
+  .sidebar { width: 260px; background: #2d3748; color: white; display: flex; flex-direction: column; flex-shrink: 0; box-shadow: 2px 0 5px rgba(0,0,0,0.1); }
+  .main-content { flex: 1; display: flex; flex-direction: column; height: 100vh; overflow: hidden; position: relative; }
+  
+  /* 사이드바 스타일 */
+  .sidebar-header { padding: 20px; border-bottom: 1px solid #4a5568; font-weight: bold; font-size: 1.2rem; display: flex; align-items: center; justify-content: space-between; }
+  .new-chat-btn { margin: 20px; padding: 10px; background: #3182ce; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s; }
+  .new-chat-btn:hover { background: #2b6cb0; }
+  .history-list { flex: 1; overflow-y: auto; padding: 10px; list-style: none; margin: 0; }
+  .history-item { padding: 10px 12px; margin-bottom: 4px; border-radius: 6px; cursor: pointer; color: #cbd5e0; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: background 0.2s; }
+  .history-item:hover { background: #4a5568; color: white; }
+  .history-item.active { background: #4a5568; color: white; font-weight: bold; }
+  
+  /* 메인 영역 스타일 */
+  .scroll-area { flex: 1; overflow-y: auto; padding: 30px; padding-bottom: 100px; /* footer space */ scroll-behavior: smooth; }
+  .input-container { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 30px; max-width: 800px; margin-left: auto; margin-right: auto; }
+  .cards-container { max-width: 800px; margin: 0 auto; }
+  
+  /* 유틸 */
+  h1 { margin: 0; font-size: 1.5rem; color: #2d3748; margin-bottom: 20px; text-align: center; }
+  textarea { transition: border 0.2s; }
+  textarea:focus { outline: none; border-color: #3182ce; }
+</style>
+</head>
+<body>
+
+<!-- 사이드바 -->
+<div class="sidebar">
+  <div class="sidebar-header">
+    Agent Coach
+    <span style="font-size: 0.8rem; background: #4a5568; padding: 2px 6px; border-radius: 4px;">v1.0</span>
+  </div>
+  <button class="new-chat-btn" id="btn-new">+ 새로운 진단</button>
+  <div style="padding: 0 20px; font-size: 0.8rem; color: #a0aec0; margin-bottom: 4px;">히스토리</div>
+  <ul class="history-list" id="history-list">
+    <!-- JS로 렌더링 -->
+  </ul>
+</div>
+
+<!-- 메인 콘텐츠 -->
+<div class="main-content">
+  <div class="scroll-area" id="scroll-area">
+    <h1>📝 자동 코치 에이전트</h1>
+    
+    <!-- 입력 영역 (상단 고정처럼 보이지만 스크롤에 포함됨) -->
+    <div class="input-container">
+      <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+        <select id="preset" style="flex: 1; padding: 8px; border: 1px solid #e2e8f0; border-radius: 6px;">
+          <option value="">프리셋 선택...</option>
+          <option value="todo_api">1) Node.js Todo API 점검</option>
+          <option value="compose_net">2) Docker Compose 네트워크/포트 점검</option>
+          <option value="db_charset">3) MySQL 한글/인코딩 점검</option>
+        </select>
+        <button id="btn-clear" style="padding: 8px 12px; background: #edf2f7; border: none; border-radius: 6px; cursor: pointer;">초기화</button>
+      </div>
+
+      <textarea id="question" rows="4" style="width: 96%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 6px; resize: vertical; mb-2" 
+        placeholder="질문, 에러 로그, 혹은 설정 파일 내용을 입력하세요."></textarea>
+      
+      <div style="margin-top: 10px; text-align: right;">
+        <button id="btn-send" style="background: #3182ce; color: white; border: none; padding: 10px 24px; border-radius: 6px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 4px rgba(49,130,206,0.3);">
+          진단 요청
+        </button>
+      </div>
+    </div>
+
+    <!-- 결과 히스토리 영역 -->
+    <div class="cards-container" id="cards-area"></div>
+    <div id="bottom-anchor"></div>
+  </div>
+</div>
+
+<script>
+  // DOM 요소
+  const presetEl = document.querySelector("#preset");
+  const questionEl = document.querySelector("#question");
+  const sendBtn = document.querySelector("#btn-send");
+  const clearBtn = document.querySelector("#btn-clear");
+  const newChatBtn = document.querySelector("#btn-new");
+  const cardsArea = document.querySelector("#cards-area");
+  const historyListEl = document.querySelector("#history-list");
+  const scrollArea = document.querySelector("#scroll-area");
+
+  // 상태 관리
+  let historyData = JSON.parse(localStorage.getItem("coach_history") || "[]");
+  let currentSessionId = null;
+
+  // 초기화
+  init();
+
+  function init() {
+    renderHistoryList();
+    startNewSession();
+  }
+
+  function startNewSession() {
+    currentSessionId = "session-" + Date.now();
+    cardsArea.innerHTML = ""; // 화면 비우기
+    presetEl.value = "";
+    questionEl.value = "";
+    questionEl.placeholder = "새로운 진단을 시작합니다.";
+    
+    // 비어있는 세션은 아직 저장하지 않음 (첫 질문 시 저장)
+    renderHistoryList();
+  }
+
+  function loadSession(sessionId) {
+    const session = historyData.find(s => s.id === sessionId);
+    if (!session) return;
+
+    currentSessionId = sessionId;
+    cardsArea.innerHTML = ""; // 비우고
+    
+    // 저장된 대화 카드 복원
+    session.chats.forEach(chat => {
+      const card = createResultCard(chat.question, chat.data, chat.isError, chat.timestamp);
+      cardsArea.insertAdjacentElement('afterbegin', card); // 최신순 (역순 저장되어 있다면 순서 주의)
+    });
+
+    // UX: 저장된 설정 불러오기 (마지막 프리셋)
+    if(session.chats.length > 0) {
+      // 가장 최근(배열의 0번) 혹은 마지막 대화의 프리셋?
+      // 여기선 편의상 0번 사용
+       // presetEl.value = ... (저장 로직에 프리셋도 넣으면 좋음)
+    }
+    
+    renderHistoryList();
+  }
+
+  function saveChatToHistory(qText, data, isError) {
+    let session = historyData.find(s => s.id === currentSessionId);
+    
+    // 세션 없으면 생성 (첫 대화)
+    if (!session) {
+      session = {
+        id: currentSessionId,
+        title: qText.substring(0, 20) + (qText.length > 20 ? "..." : ""),
+        timestamp: Date.now(),
+        chats: []
+      };
+      historyData.unshift(session); // 맨 앞에 추가
+    } else {
+      // 제목 업데이트 (첫 질문이 제목이 됨)
+      if (session.chats.length === 0) {
+         session.title = qText.substring(0, 20) + (qText.length > 20 ? "..." : "");
+      }
+      session.timestamp = Date.now(); // 갱신 시간 업데이트
+      // 배열 재정렬: 최신 세션이 위로 오도록
+      historyData = historyData.filter(s => s.id !== currentSessionId);
+      historyData.unshift(session);
+    }
+
+    // 대화 내용 추가
+    session.chats.unshift({ // 최신 대화가 위로 오게 저장
+      question: qText,
+      data: data,
+      isError: isError,
+      timestamp: Date.now()
+    });
+
+    // 로컬 스토리지 저장
+    localStorage.setItem("coach_history", JSON.stringify(historyData));
+    renderHistoryList();
+  }
+
+  function renderHistoryList() {
+    historyListEl.innerHTML = "";
+    historyData.forEach(session => {
+      const li = document.createElement("li");
+      li.className = `history-item ${session.id === currentSessionId ? 'active' : ''}`;
+      li.textContent = session.title || "(제목 없음)";
+      li.onclick = () => loadSession(session.id);
+      
+      // 삭제 버튼 (옵션)
+      // const delBtn = ...
+
+      historyListEl.appendChild(li);
+    });
+  }
+
+  function createResultCard(qText, data, isError = false, timestamp = Date.now()) {
+    const card = document.createElement("div");
+    card.style.background = "#fff";
+    card.style.border = "1px solid #e2e8f0";
+    card.style.borderRadius = "8px";
+    card.style.padding = "20px";
+    card.style.marginBottom = "20px";
+    card.style.boxShadow = "0 2px 4px rgba(0,0,0,0.05)";
+    
+    const timeStr = new Date(timestamp).toLocaleTimeString();
+    
+    let statusHtml = "";
+    if (isError) {
+      statusHtml = `<span style="background:#fed7d7; color:#822727; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:bold;">🚨 ERROR</span>`;
+    } else if (data.status === "DONE") {
+      statusHtml = `<span style="background:#c6f6d5; color:#22543d; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:bold;">✅ 완료</span>`;
+    } else if (data.status === "NEED_INFO") {
+      statusHtml = `<span style="background:#feebc8; color:#744210; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:bold;">⚠️ 정보 부족</span>`;
+    } else {
+      statusHtml = `<span style="background:#edf2f7; color:#4a5568; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:bold;">💬 대화 중</span>`;
+    }
+
+    card.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid #eee; padding-bottom:8px;">
+        <span style="font-size:13px; color:#718096;">${timeStr}</span>
+        ${statusHtml}
+      </div>
+      <div style="font-weight:bold; color:#2d3748; margin-bottom:12px; line-height:1.5;">Q. ${qText}</div>
+    `;
+
+    // Trace
+    if (data.trace && data.trace.length > 0) {
+      const traceBox = document.createElement("div");
+      traceBox.style.background = "#f7fafc";
+      traceBox.style.padding = "10px";
+      traceBox.style.borderRadius = "6px";
+      traceBox.style.fontSize = "13px";
+      traceBox.style.color = "#4a5568";
+      traceBox.style.marginBottom = "12px";
+      traceBox.style.borderLeft = "3px solid #cbd5e0";
+      
+      let traceHtml = `<div style="font-weight:bold; margin-bottom:4px; color:#2b6cb0;">🔍 진단 로그</div>`;
+      data.trace.forEach(step => {
+        traceHtml += `<div style="margin-bottom:2px;"><span style="color:#a0aec0;">[${step.stage}]</span> ${step.message}</div>`;
+      });
+      traceBox.innerHTML = traceHtml;
+      card.appendChild(traceBox);
+    }
+
+    // Answer
+    const answerBox = document.createElement("div");
+    answerBox.style.whiteSpace = "pre-wrap";
+    answerBox.style.lineHeight = "1.6";
+    answerBox.style.color = "#2d3748";
+    answerBox.textContent = isError ? data.error : (data.answer || "응답 내용 없음");
+    
+    card.appendChild(answerBox);
+    return card;
+  }
+
+  // 이벤트 리스너
+  newChatBtn.addEventListener("click", startNewSession);
+  
+  clearBtn.addEventListener("click", () => {
+    presetEl.value = "";
+    questionEl.value = "";
+    questionEl.focus();
+  });
+
+  sendBtn.addEventListener("click", async () => {
+    const pid = presetEl.value;
+    const q = questionEl.value.trim();
+
+    if (!pid) { alert("프리셋을 선택해주세요!"); return; }
+    if (!q) { alert("질문 내용을 입력해주세요!"); return; }
+
+    const originalBtnText = sendBtn.textContent;
+    sendBtn.textContent = "분석 중...";
+    sendBtn.disabled = true;
+
+    try {
+      // conversation_id는 현재 세션 ID 사용
+      const res = await fetch("/api/coach", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ preset_id: pid, question: q, conversation_id: currentSessionId })
+      });
+      const data = await res.json().catch(() => ({}));
+      
+      const isError = !res.ok;
+      
+      // 화면 표시
+      const card = createResultCard(q, isError ? { error: data.error || "통신 오류" } : data, isError);
+      cardsArea.insertAdjacentElement('afterbegin', card);
+      
+      // 히스토리 저장
+      saveChatToHistory(q, isError ? { error: data.error } : data, isError);
+
+      // 후속 처리
+      if (data.status === "NEED_INFO" && data.next_question) {
+        questionEl.placeholder = `[추가 요청] ${data.next_question}`;
+        questionEl.value = ""; // 내용 비우고 placeholder로 가이드
+        questionEl.focus();
+      } else {
+        questionEl.placeholder = "추가 질문이 있으신가요?";
+        questionEl.value = ""; // 완료 시 비움
+      }
+
+    } catch (e) {
+      alert("서버 오류: " + e.message);
+    } finally {
+      sendBtn.textContent = "진단 요청";
+      sendBtn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>
