@@ -46,6 +46,17 @@ AI 에이전트 개발과 데이터 분석, 웹 개발 학습 기록 저장소�
 
 ## 📅 2026년 학습 내용
 
+### LangChain/8.mini-project (2월 23일)
+
+> 통합 상담 센터 미니 프로젝트 (FastAPI + Streamlit + LangGraph)
+
+- **Backend (FastAPI & LangGraph)**:
+  - FAISS 기반 로컬 지식 검색(PDF 문서) 및 Tavily 웹 검색 툴을 활용하는 에이전트 구축
+  - `StateGraph`를 통한 워크플로우 구성 및 FastAPI 서빙 (`backend_api.py`)
+- **Frontend (Streamlit)**:
+  - 실시간 채팅 UI 및 다운로드 가능한 TTS(음성 변환) 리포트 제공 (`frontend_ui.py`)
+  - 통계 데이터 수집 및 대시보드 시각화(응답 시간, 토큰 사용량) 구현
+
 ### LangChain/03_RAG, 6.Graph, 7.FastAPI (2월 20일)
 
 > FAISS 기반 RAG 시스템 및 LangGraph 시각화 워크플로우 통제, FastAPI 유저 모델 관리 실습
