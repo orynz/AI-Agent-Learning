@@ -246,3 +246,6 @@ $RECYCLE.BIN/
 .vscode
 data
 utils.py
+reports
+model
+*.pkl
