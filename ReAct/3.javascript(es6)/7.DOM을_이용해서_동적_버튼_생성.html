@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>7.DOM을 이용해서 동적 버튼생성</title>
+    <script>
+        let itemCount = 0;
+
+        const appendItem = () => {
+            itemCount++;
+
+            let itemList = document.getElementById("itemList");
+            let newDivItem = document.createElement("div");
+            let newButtonItem = document.createElement("button");
+
+            // 1. 아이템 구성
+            newDivItem.innerHTML = `아이템_${itemCount} `;
+            newDivItem.setAttribute("id", `item${itemCount}`);
+
+            // 2. 삭제 버튼 구성
+            newButtonItem.innerHTML = "삭제";
+            // 핵심: 어떤 번호를 지울지 매개변수로 전달
+            newButtonItem.setAttribute("onclick", `removeItem(${itemCount})`);
+
+            // 3. 화면에 추가
+            newDivItem.appendChild(newButtonItem);
+            itemList.appendChild(newDivItem);
+        }
+
+        const removeItem = (idCount) => {
+            // 전달받은 번호로 해당 div 찾기
+            let targetItem = document.getElementById(`item${idCount}`);
+            
+            if (targetItem) {
+                targetItem.remove(); // 요소 삭제
+                console.log(`아이템 ${idCount}번이 삭제되었습니다.`);
+            }
+        }
+    </script>
+</head>
+<body>
+    <input type="button" value="추가" onclick="appendItem()">
+    <div id="itemList" style="margin-top: 20px;">
+        <!-- 아이템들이 여기에 추가됩니다 -->
+    </div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>VScode에서 자주 사용되는 단축키</h3>
+    <p>!, +, >, ., #, *, $, ^, ^^, (), {}</p>
+    <ol>
+        <li>html문서 템플릿 작성법 => html 파일 작성후 <br>
+            ! => 엔터
+        </li>
+        <li>태그를 여러개 생성하는 방법 => 태그명*갯수<br>
+            ex> div*5
+        </li>
+        <li>태그 중첩해서 생성하는 방법 => 태그명>태그명>태그명...<br>
+            ex> div>ul>ol>*3
+        </li>
+        <li>인접한 태그 생성하는 방법 => 태그명+태그명+태그명...<br>
+            ex> div+h1+h2+h3+span
+        </li>
+        <li>태그{내용} 입력 후 enter <br>
+            ex> p{내용} enter
+        </li>
+        <li>아이디 선택자 => 태그명#아이디명 <br>
+            ex> div#name
+        </li>
+        <li>아이디 선택자 자동 넘버링=> 태그명#아이디명$갯수 <br>
+            ex> div{내용}#name$*n
+        </li>
+        <li>클래스 선택자 => 태그명.클래스명 <br>
+            ex> div.test
+        </li>
+        <li>클래스 선택자 자동 넘버링 => 태그명.클래스명 <br>
+            ex> div{내용}#name.test$*2 <br>
+            ex> div{내용}.test#name$*2 <br>
+        </li>
+        <li>
+            ^ 입력시, 한 단계 상위계층으로 이동 => 자식 태그로 만듦 <br>
+            ex> div>ul>li^p
+        </li>
+        <li>^^P 한 단계 아래로 이동 형식<br>
+            ex> div>ul>li>^^p        
+        </li>
+        <li>
+            ex> div>ul>li+p<br>
+        </li>
+        <li>(태그,,,) 그룹으로 묶어주는 경우 <br>
+            ex> div>(ul>li)+ol>li            
+        </li>
+        <li>자동 완성 기능 div#myid.classA.classB<br>
+            ex> <div id="myid" class="classA classB"></div>
+        </li>
+        <li>자동 완성 기능 div#myid.classA.classB 입력후 enter
+            div#myid.classA (id와 클래스선택자를 동시에 생성)
+            <div id="myid" class="classA"></div>
+        </li>
+    </ol>
+    
+</body>
+</html>

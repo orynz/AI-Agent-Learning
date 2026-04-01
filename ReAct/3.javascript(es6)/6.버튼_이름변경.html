@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <!-- 외부 라이브러리(Tailwind) 불러오기 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // 
+        const btnNameChange = () => {
+             // 버튼 요소 찾기
+            let idBtn = document.getElementById('btn');
+            
+            // 기본 공통 스타일 클래스 (크기, 둥글기, 애니메이션 등)
+            const baseClass = "w-full py-2 transition rounded ";
+
+            if (idBtn.innerHTML === "네이버") {
+                idBtn.innerHTML = "카카오";
+                // 카카오 스타일: 노란 배경 + 검은 글씨 + 호버 효과
+                idBtn.className = baseClass + "bg-yellow-300 hover:bg-yellow-400 text-black";
+            } 
+            else {
+                idBtn.innerHTML = "네이버";
+                // 네이버 스타일: 초록 배경 + 하얀 글씨 + 호버 효과
+                idBtn.className = baseClass + "bg-green-500 hover:bg-green-600 text-white";
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-400 flex items-center h-screen justify-center">
+    <div class="bg-white p-10">
+        <label for="">하단의 버튼을 클릭해 보세요!</label><br>
+
+        <button onclick="btnNameChange()" id="btn" class="w-full bg-green-500 hover:bg-green-600 text-white py-2 transition rounded">네이버</button>
+    </div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>상세보기</title>
+</head>
+
+<body class="bg-gray-100 flex justify-center items-center h-screen">
+    <div class="bg-white shadow-lg rounded-lg p-8 w-full m-8">
+        <h2 class="font-bold text-2xl mb-6">첫 번째 글</h2>
+
+        <!-- 작성자 -->
+        <div class="mb-1">
+            <label for="text" class="text-gray-700 mb-2">작성자: </label>
+            <label for="text" class="text-gray-700 mb-2">홍길동</label>
+        </div>
+        
+        <!-- 작성일 -->
+        <div class="mb-1">
+            <label for="text" class="text-gray-700 mb-2">작성일: </label>
+            <label for="text" class="text-gray-700 mb-2">2026-03-30</label>
+        </div>
+
+        <!-- 내용 -->
+        <div class="mb-4">
+            <label for="author" class="block text-gray-700 mb-2">내용</label>
+            <textarea disabled name="" id="" placeholder="여기에 내용이 표시됩니다."
+                class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" ></textarea>
+        </div>
+
+        <div class="flex justify-between mt-4">
+            <!-- 버튼 - 수정하기 -->
+            <button class="w-full bg-green-500 hover:bg-green-600 text-white py-2 m-2 transition rounded">수정하기</button>
+            
+            <!-- 버튼 - 삭제하기 -->
+            <button class="w-full bg-red-500 hover:bg-red-600 text-white py-2 m-2 transition rounded">삭제하기</button>
+
+            <!-- 버튼 - 목록으로 -->
+            <button class="w-full bg-gray-500 hover:bg-gray-600 text-white py-2 m-2 transition rounded">목록으로</button>
+        </div>
+        
+    </div>
+</body>
+
+</html>

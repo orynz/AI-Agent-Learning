@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 투자 분석기 - 입력부</title>
+</head>
+<body>
+     <!-- main>(section>h2{분석 대상 기업 입력}+(form#analysis-form>(div>label{기업명:}+input#company-name)+(div>label{리포트 종류:}+select#report-type>option*3)+button{AI 분석 시작}))+article#result-area>h3{분석 결과}+p{여기에 AI 에이전트의 답변이 출력됩니다.} -->
+      <main>
+        <section>
+            <h2>분석 대상 기업 입력</h2>
+            <form action="" id="analysis-form">
+                <div><label for="">기업명:</label><input type="text" id="company-name"></div>
+                <div><label for="">리포트 종류:</label>
+                    <select name="" id="report-type">
+                        <option value=""></option>
+                        <option value=""></option>
+                        <option value=""></option>
+                    </select>
+                </div>
+                <button>AI 분석 시작</button>
+            </form>
+        </section>
+        <article id="result-area">
+            <h3>분석 결과</h3>
+            <p>여기에 AI 에이전트의 답변이 출력됩니다.</p>
+        </article>
+      </main>
+     
+</body>
+</html>

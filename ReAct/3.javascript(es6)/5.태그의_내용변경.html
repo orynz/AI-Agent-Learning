@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5. 태그의 내용 변경</title>
+    <script>
+
+        // change() {
+        // let change = function() {
+        const change = function() {
+            // div 태그 중에서 id가 test2인 것을 찾아라
+            let divTest2 = document.getElementById("test2");
+            alert(divTest2.innerHTML + "\n"+ divTest2.innerText)
+            console.log(divTest2);
+
+            // 사용자 입력을 받아 해당 문자열로 치환
+            let input = prompt("변경할 문자열을 입력하세요: ")
+            divTest2.innerHTML = input
+
+            // 동적으로 글자색 변경
+            divTest2.style.color = "blue"
+        }
+    </script>
+</head>
+<body>
+
+    <!-- div#test{자바스크립트의 특징, let, const 차이점} -->
+    <div id="test1">자바스크립트의 특징, let, const 차이점</div>
+    <div id="test2">DOM의 개요 및 활용</div>
+    <p></p>
+
+    <form>
+        <input type="button" value="변경1" id="btn1" onclick="alert('이벤트 처리')">
+        <input type="button" value="변경2" id="btn2" onclick="change()">
+    </form>
+
+</body>
+</html>

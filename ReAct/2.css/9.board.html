@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>글목록</title>
+</head>
+<body class="bg-gray-100 flex justify-center items-center h-screen">
+
+    <div class="bg-white shadow-lg rounded-lg p-10 w-full max-w-4xl mx-4">
+        <h2 class="font-bold text-2xl mb-4">글목록</h2>
+
+        <table class="w-full border-collapse border border-gray-200">
+            <thead class="bg-gray-100">
+                <tr class="text-gray-700">
+                    <th class="border border-gray-200 px-4 py-3 w-20">번호</th>
+                    <th class="border border-gray-200 px-4 py-3">제목</th>
+                    <th class="border border-gray-200 px-4 py-3 w-32">작성자</th>
+                    <th class="border border-gray-200 px-4 py-3 w-40">작성일</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                <tr class="hover:bg-gray-50">
+                    <td class="border border-gray-200 px-4 py-3">1</td>
+                    <td class="border border-gray-200 px-4 py-3 text-left">
+                        <a href="#" class="text-blue-500 hover:underline ml-4">첫 번째 글</a>
+                    </td>
+                    <td class="border border-gray-200 px-4 py-3">홍길동</td>
+                    <td class="border border-gray-200 px-4 py-3 text-gray-600">2026-03-30</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

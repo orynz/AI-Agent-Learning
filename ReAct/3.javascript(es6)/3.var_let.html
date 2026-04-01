@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3. var / let 차이점</title>
+</head>
+<body>
+    <script>
+        var foo = 123;
+        let foo2 =344;
+        document.write("foo > " + foo, "<br>");
+        document.write("foo2 > " + foo2, "<br>");
+        {
+            var foo = 574;
+            let foo2 = 123;
+            let bar = 989;
+        }
+
+        document.writeln("**********  let 특징 **********<br>")
+        document.write("foo2 > " + foo2, "<br>");
+        document.write("bar > " + bar, "<br>");
+    </script>
+</body>
+</html>
